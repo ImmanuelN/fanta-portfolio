@@ -7,9 +7,7 @@ import YellowCan from "../images/pngegg (5) 1.png"; // Pineapple can
 import { theme } from "../styles/themes";
 
 const AnimationSection: React.FC = () => {
-  const [flavor, setFlavor] = useState<"orange" | "grape" | "pineapple">(
-    "orange"
-  );
+  const [flavor, setFlavor] = useState<"orange" | "grape" | "pineapple">("orange");
 
   // Auto-cycle flavors every 6 seconds
   useEffect(() => {
@@ -54,7 +52,7 @@ const AnimationSection: React.FC = () => {
     const flavorNames = {
       orange: "ORANGE",
       grape: "GRAPE",
-      pineapple: "PINEAPPLE", // Adjusted spacing for consistency
+      pineapple: "PINEAPPLE",
     };
     return flavorNames[flavor];
   };
@@ -63,54 +61,15 @@ const AnimationSection: React.FC = () => {
 
   // Animation variants
   const textVariants = {
-    initial: {
-      y: 50,
-      opacity: 0,
-    },
-    animate: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        delay: 0.2, // Slight delay to stagger after the can
-      },
-    },
-    exit: {
-      y: -50,
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-      },
-    },
+    initial: { y: 50, opacity: 0 },
+    animate: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100, damping: 20, delay: 0.2 } },
+    exit: { y: -50, opacity: 0, transition: { duration: 0.3 } },
   };
 
   const canVariants = {
-    initial: {
-      scale: 0.8,
-      opacity: 0,
-      rotate: -10,
-    },
-    animate: {
-      scale: 1,
-      opacity: 1,
-      rotate: 0,
-      transition: {
-        type: "spring",
-        stiffness: 150,
-        damping: 15,
-        duration: 0.5,
-      },
-    },
-    exit: {
-      scale: 0.8,
-      opacity: 0,
-      rotate: 10,
-      transition: {
-        duration: 0.3,
-      },
-    },
+    initial: { scale: 0.8, opacity: 0, rotate: -10 },
+    animate: { scale: 1, opacity: 1, rotate: 0, transition: { type: "spring", stiffness: 150, damping: 15, duration: 0.5 } },
+    exit: { scale: 0.8, opacity: 0, rotate: 10, transition: { duration: 0.3 } },
   };
 
   return (
@@ -125,14 +84,7 @@ const AnimationSection: React.FC = () => {
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={flavor}
@@ -141,16 +93,12 @@ const AnimationSection: React.FC = () => {
             animate="animate"
             exit="exit"
             id="middleSection"
-            style={{
-              zIndex: 1000,
-            }}
+            style={{ zIndex: 1000 }}
           >
             <motion.img
               src={getCanImage()}
               alt={`Fanta ${flavor} can`}
-              style={{
-                height: "800px",
-              }}
+              style={{ height: "800px" }}
             />
           </motion.div>
         </AnimatePresence>
@@ -166,7 +114,7 @@ const AnimationSection: React.FC = () => {
             style={{
               fontSize: "250px",
               fontWeight: "bolder",
-              letterSpacing:"30px",
+              letterSpacing: "30px",
               color: getTextColor(),
               position: "absolute",
               zIndex: 500,
