@@ -1,38 +1,10 @@
 // src/components/FlavoursSection.tsx
 import React, { useEffect, useRef } from "react";
 import { theme } from "../styles/themes"; // Adjust path as needed
-import OrangeCan from "../images/pngegg.png"; // Adjust image paths
-import PurpleCan from "../images/pngegg (4) 1.png";
-import YellowCan from "../images/pngegg (5) 1.png";
-import OrangeSlice from "../images/pngegg (8).png";
-import PineappleSlice from "../images/pngegg (9).png";
-import Grapes from "../images/pngegg (12).png";
 import FlavorSlider from "./FlavourSlider"; // Your carousel component
 import { motion, useAnimation } from "framer-motion";
 
 const FlavoursSection: React.FC = () => {
-  // Flavor data for the carousel
-  const flavors = [
-    {
-      id: 1,
-      color: theme.colors.fantaOrange1,
-      canImage: OrangeCan,
-      fruitImage: OrangeSlice,
-    },
-    {
-      id: 2,
-      color: theme.colors.fantaGrape,
-      canImage: PurpleCan,
-      fruitImage: Grapes,
-    },
-    {
-      id: 3,
-      color: theme.colors.electricYellow,
-      canImage: YellowCan,
-      fruitImage: PineappleSlice,
-    },
-  ];
-
   // Array of emojis for bouncing animation
   const emojis = ["🍊", "🍇", "🍍", "🍋", "🍓", "🍒", "🍉", "🍑", "🫐", "🍏"];
   const numberOfEmojis = 20; // Adjust as desired
