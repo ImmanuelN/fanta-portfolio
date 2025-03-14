@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
           marginTop: "20px",
         }}
       >
-        © 2025 Fanta Portfolio
+        © 2025 Crash0utTech
       </p>
     </footer>
   );
