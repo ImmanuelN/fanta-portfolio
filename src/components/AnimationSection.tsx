@@ -1,65 +1,38 @@
 // src/components/AnimationSection.tsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import MainFantaCan from "../images/Fanta Can.png"; // Orange can
-import PurpleCan from "../images/pngegg (4) 1.png"; // Grape can
-import YellowCan from "../images/pngegg (5) 1.png"; // Pineapple can
+import MainFantaCan from "../images/Fanta Can.png";
+import PurpleCan from "../images/pngegg (4) 1.png";
+import YellowCan from "../images/pngegg (5) 1.png";
 import { theme } from "../styles/themes";
 
 const AnimationSection: React.FC = () => {
   const [flavor, setFlavor] = useState<"orange" | "grape" | "pineapple">("orange");
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Auto-cycle flavors every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setFlavor((prevFlavor) => {
-        if (prevFlavor === "orange") return "grape";
-        if (prevFlavor === "grape") return "pineapple";
-        return "orange";
-      });
+      setFlavor((prev) => (prev === "orange" ? "grape" : prev === "grape" ? "pineapple" : "orange"));
     }, 6000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // Determine can image and text color based on flavor
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const getCanImage = () => {
-    switch (flavor) {
-      case "grape":
-        return PurpleCan;
-      case "pineapple":
-        return YellowCan;
-      case "orange":
-      default:
-        return MainFantaCan;
-    }
+    return flavor === "grape" ? PurpleCan : flavor === "pineapple" ? YellowCan : MainFantaCan;
   };
 
   const getTextColor = () => {
-    switch (flavor) {
-      case "grape":
-        return theme.colors.fantaGrape;
-      case "pineapple":
-        return theme.colors.electricYellow;
-      case "orange":
-      default:
-        return theme.colors.fantaOrange1;
-    }
+    return flavor === "grape" ? theme.colors.fantaGrape : flavor === "pineapple" ? theme.colors.electricYellow : theme.colors.fantaOrange1;
   };
 
-  // Get the full flavor name
-  const getFlavorName = () => {
-    const flavorNames = {
-      orange: "ORANGE",
-      grape: "GRAPE",
-      pineapple: "PINEAPPLE",
-    };
-    return flavorNames[flavor];
-  };
+  const flavorName = flavor.toUpperCase();
 
-  const flavorName = getFlavorName();
-
-  // Animation variants
   const textVariants = {
     initial: { y: 50, opacity: 0 },
     animate: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100, damping: 20, delay: 0.2 } },
@@ -76,15 +49,29 @@ const AnimationSection: React.FC = () => {
     <section
       id="home"
       style={{
-        height: "1000px",
+        height: isMobile ? "100px" : "1000px",
+        minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
         overflow: "hidden",
+        padding: isMobile ? "0px 0" : "0",
+        width:"100%",
+        maxWidth:"100%",
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          maxWidth: "1200px",
+          padding: isMobile ? "0 10px" : "0",
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={flavor}
@@ -98,7 +85,7 @@ const AnimationSection: React.FC = () => {
             <motion.img
               src={getCanImage()}
               alt={`Fanta ${flavor} can`}
-              style={{ height: "800px" }}
+              style={{ height: isMobile ? "300px" : "800px", width: "auto" }}
             />
           </motion.div>
         </AnimatePresence>
@@ -112,12 +99,13 @@ const AnimationSection: React.FC = () => {
             exit="exit"
             id="rightSection"
             style={{
-              fontSize: "250px",
+              fontSize: isMobile ? "80px" : "250px",
               fontWeight: "bolder",
-              letterSpacing: "30px",
+              letterSpacing: isMobile ? "0px" : "30px",
               color: getTextColor(),
-              position: "absolute",
+              position: isMobile ? "relative" : "absolute",
               zIndex: 500,
+              marginTop: isMobile ? "-190px" : "0",
             }}
           >
             {flavorName}

@@ -4,54 +4,37 @@ import { theme } from "../styles/themes";
 import CokeLogo from "../images/images.png";
 
 const Navbar: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true); // Tracks if Navbar is visible
-  const [lastScrollY, setLastScrollY] = useState(0); // Tracks last scroll position
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Tracks burger menu state
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Tracks screen width
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Handle scroll behavior
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        // Scrolling down and past 50px threshold
-        setIsVisible(false);
-      } else if (currentScrollY < lastScrollY) {
-        // Scrolling up
-        setIsVisible(true);
-      }
-
-      setLastScrollY(currentScrollY); // Update last scroll position
+      if (currentScrollY > lastScrollY && currentScrollY > 50) setIsVisible(false);
+      else if (currentScrollY < lastScrollY) setIsVisible(true);
+      setLastScrollY(currentScrollY);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Handle window resize for responsive design
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
-    handleResize(); // Initial check
-    return () => window.removeEventListener("resize", handleResize); // Cleanup
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Toggle mobile menu
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  // Smooth scroll function
   const scrollToSection = (event: React.MouseEvent, targetId: string) => {
     event.preventDefault();
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
-      setIsMenuOpen(false); // Close menu after clicking a link
+      setIsMenuOpen(false);
     }
   };
 
@@ -61,7 +44,7 @@ const Navbar: React.FC = () => {
         backgroundColor: theme.colors.white,
         color: theme.colors.darkBrown,
         fontFamily: theme.fonts.primary,
-        padding: theme.spacing.medium,
+        padding: isMobile ? "10px 5%" : theme.spacing.medium,
         height: "48px",
         display: "flex",
         alignItems: "center",
@@ -78,78 +61,42 @@ const Navbar: React.FC = () => {
         src={CokeLogo}
         alt="Coca-Cola logo"
         style={{
-          height: "80%",
+          height: isMobile ? "60%" : "80%",
           width: "auto",
-          paddingLeft: "10%",
+          paddingLeft: isMobile ? "0" : "10%",
         }}
       />
 
-      {/* Desktop Links - Visible on larger screens */}
       <div
         style={{
-          display: isMobile ? "none" : "flex", // Hide on mobile, show on desktop
-          gap: "30px",
-          paddingRight: "10%",
+          display: isMobile ? "none" : "flex",
+          gap: isMobile ? "15px" : "30px",
+          paddingRight: isMobile ? "50%" : "10%",
         }}
       >
-        <a
-          href="#home"
-          onClick={(e) => scrollToSection(e, "home")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1rem",
-            fontWeight: "bold",
-          }}
-        >
-          Home
-        </a>
-        <a
-          href="#history"
-          onClick={(e) => scrollToSection(e, "history")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1rem",
-            fontWeight: "bold",
-          }}
-        >
-          History
-        </a>
-        <a
-          href="#flavours"
-          onClick={(e) => scrollToSection(e, "flavours")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1rem",
-            fontWeight: "bold",
-          }}
-        >
-          Flavours
-        </a>
-        <a
-          href="#get-in-touch"
-          onClick={(e) => scrollToSection(e, "get-in-touch")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1rem",
-            fontWeight: "bold",
-          }}
-        >
-          Contact
-        </a>
+        {["Home", "History", "Flavours", "Contact"].map((item) => (
+          <a
+            key={item}
+            href={`#${item.toLowerCase()}`}
+            onClick={(e) => scrollToSection(e, item.toLowerCase())}
+            style={{
+              color: theme.colors.darkBrown,
+              textDecoration: "none",
+              fontSize: isMobile ? "0.9rem" : "1rem",
+              fontWeight: "bold",
+            }}
+          >
+            {item}
+          </a>
+        ))}
       </div>
 
-      {/* Burger Menu Icon - Visible on small screens */}
       <div
         style={{
-          display: isMobile ? "block" : "none", // Show only on mobile
+          display: isMobile ? "block" : "none",
           position: "absolute",
           right: "10%",
           cursor: "pointer",
-          fontSize: "1.5rem",
           padding: "10px",
         }}
         onClick={toggleMenu}
@@ -159,7 +106,7 @@ const Navbar: React.FC = () => {
             width: "25px",
             height: "3px",
             backgroundColor: theme.colors.darkBrown,
-            position: "relative",
+            transform: isMenuOpen ? "rotate(45deg) translate(5px, 5px)" : "none",
             transition: "all 0.3s ease",
           }}
         />
@@ -168,8 +115,8 @@ const Navbar: React.FC = () => {
             width: "25px",
             height: "3px",
             backgroundColor: theme.colors.darkBrown,
-            position: "relative",
-            top: "-8px",
+            margin: "5px 0",
+            opacity: isMenuOpen ? 0 : 1,
             transition: "all 0.3s ease",
           }}
         />
@@ -178,17 +125,15 @@ const Navbar: React.FC = () => {
             width: "25px",
             height: "3px",
             backgroundColor: theme.colors.darkBrown,
-            position: "relative",
-            top: "-15px",
+            transform: isMenuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none",
             transition: "all 0.3s ease",
           }}
         />
       </div>
 
-      {/* Mobile Menu */}
       <div
         style={{
-          display: isMenuOpen && isMobile ? "flex" : "none", // Show only when menu is open and on mobile
+          display: isMenuOpen && isMobile ? "flex" : "none",
           flexDirection: "column",
           position: "absolute",
           top: "48px",
@@ -200,54 +145,21 @@ const Navbar: React.FC = () => {
           zIndex: 1000,
         }}
       >
-        <a
-          href="#home"
-          onClick={(e) => scrollToSection(e, "home")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1.2rem",
-            margin: "10px 0",
-          }}
-        >
-          Home
-        </a>
-        <a
-          href="#history"
-          onClick={(e) => scrollToSection(e, "history")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1.2rem",
-            margin: "10px 0",
-          }}
-        >
-          History
-        </a>
-        <a
-          href="#flavours"
-          onClick={(e) => scrollToSection(e, "flavours")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1.2rem",
-            margin: "10px 0",
-          }}
-        >
-          Flavours
-        </a>
-        <a
-          href="#get-in-touch"
-          onClick={(e) => scrollToSection(e, "get-in-touch")}
-          style={{
-            color: theme.colors.darkBrown,
-            textDecoration: "none",
-            fontSize: "1.2rem",
-            margin: "10px 0",
-          }}
-        >
-          Contact
-        </a>
+        {["Home", "History", "Flavours", "Contact"].map((item) => (
+          <a
+            key={item}
+            href={`#${item.toLowerCase()}`}
+            onClick={(e) => scrollToSection(e, item.toLowerCase())}
+            style={{
+              color: theme.colors.darkBrown,
+              textDecoration: "none",
+              fontSize: "1.2rem",
+              margin: "10px 0",
+            }}
+          >
+            {item}
+          </a>
+        ))}
       </div>
     </nav>
   );

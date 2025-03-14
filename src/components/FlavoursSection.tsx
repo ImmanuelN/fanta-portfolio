@@ -1,15 +1,29 @@
 // src/components/FlavoursSection.tsx
 import React, { useEffect, useRef } from "react";
-import { theme } from "../styles/themes"; // Adjust path as needed
-import FlavorSlider from "./FlavourSlider"; // Your carousel component
+import { theme } from "../styles/themes";
+import FlavorSlider from "./FlavourSlider";
 import { motion, useAnimation } from "framer-motion";
+// Import images
+import OrangeCan from "../images/pngegg.png";
+import PurpleCan from "../images/pngegg (4) 1.png";
+import YellowCan from "../images/pngegg (5) 1.png";
 
 const FlavoursSection: React.FC = () => {
-  // Array of emojis for bouncing animation
   const emojis = ["🍊", "🍇", "🍍", "🍋", "🍓", "🍒", "🍉", "🍑", "🫐", "🍏"];
-  const numberOfEmojis = 20; // Adjust as desired
+  const numberOfEmojis = 20;
+  const isMobile = window.innerWidth <= 768;
 
-  // Component for a single bouncing emoji
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
+  // Use imported image variables
+  const flavors = [
+    { id: 1, color: theme.colors.fantaOrange1, canImage: OrangeCan },
+    { id: 2, color: theme.colors.fantaGrape, canImage: PurpleCan },
+    { id: 3, color: theme.colors.electricYellow, canImage: YellowCan },
+  ];
+
+  const currentColor = flavors[currentIndex].color;
+
   const BouncingEmoji = ({ emoji }: { emoji: string }) => {
     const controls = useAnimation();
     const ref = useRef<HTMLDivElement>(null);
@@ -21,30 +35,24 @@ const FlavoursSection: React.FC = () => {
       const sectionWidth = section.clientWidth;
       const sectionHeight = section.clientHeight;
 
-      // Initial random position and velocity
-      let x = Math.random() * (sectionWidth - 50); // Adjust for emoji width
-      let y = Math.random() * (sectionHeight - 50); // Adjust for emoji height
-      let vx = (Math.random() - 0.5) * 4; // Random velocity between -2 and 2
+      let x = Math.random() * (sectionWidth - 50);
+      let y = Math.random() * (sectionHeight - 50);
+      let vx = (Math.random() - 0.5) * 4;
       let vy = (Math.random() - 0.5) * 4;
 
       const animate = () => {
-        // Update position based on velocity
         x += vx;
         y += vy;
 
-        // Bounce off left or right borders
         if (x <= 0 || x >= sectionWidth - (ref.current?.offsetWidth || 0)) {
-          vx = -vx; // Reverse x velocity
+          vx = -vx;
           x = Math.max(0, Math.min(x, sectionWidth - (ref.current?.offsetWidth || 0)));
         }
-
-        // Bounce off top or bottom borders
         if (y <= 0 || y >= sectionHeight - (ref.current?.offsetHeight || 0)) {
-          vy = -vy; // Reverse y velocity
+          vy = -vy;
           y = Math.max(0, Math.min(y, sectionHeight - (ref.current?.offsetHeight || 0)));
         }
 
-        // Apply new position
         controls.set({ x, y });
         requestAnimationFrame(animate);
       };
@@ -59,9 +67,9 @@ const FlavoursSection: React.FC = () => {
         ref={ref}
         style={{
           position: "absolute",
-          fontSize: "4rem", // Adjust size as needed
-          opacity: 0.3, // Slightly transparent
-          pointerEvents: "none", // Prevents interference with interactive elements
+          fontSize: "4rem",
+          opacity: 0.3,
+          pointerEvents: "none",
         }}
         animate={controls}
       >
@@ -81,10 +89,9 @@ const FlavoursSection: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        minHeight: "100vh", // Full viewport height
+        minHeight: "100vh",
       }}
     >
-      {/* Emoji Container */}
       <div
         style={{
           position: "absolute",
@@ -92,8 +99,8 @@ const FlavoursSection: React.FC = () => {
           left: 0,
           width: "100%",
           height: "100%",
-          zIndex: -1, // Behind main content
-          overflow: "hidden", // Prevents emojis from escaping
+          zIndex: -1,
+          overflow: "hidden",
         }}
       >
         {Array.from({ length: numberOfEmojis }).map((_, index) => {
@@ -102,7 +109,6 @@ const FlavoursSection: React.FC = () => {
         })}
       </div>
 
-      {/* Main Content Wrapper */}
       <div
         style={{
           display: "flex",
@@ -110,18 +116,17 @@ const FlavoursSection: React.FC = () => {
           alignItems: "center",
           justifyContent: "center",
           flex: 1,
-          zIndex: 1, // Above emojis
+          zIndex: 1,
         }}
       >
-        {/* Header with Gradient Text */}
         <h1
           style={{
             fontFamily: theme.fonts.primary,
-            fontSize: "2.5rem",
+            fontSize: isMobile ? "1.5rem" : "2.5rem",
             fontWeight: "bold",
             textAlign: "center",
-            marginBottom: "40px",
-            backgroundImage: `linear-gradient(90deg, ${theme.colors.fantaOrange1}, ${theme.colors.fantaOrange2})`,
+            marginBottom: isMobile ? "-40px" : "40px",
+            backgroundImage: `linear-gradient(90deg, ${currentColor}, ${theme.colors.fantaOrange2})`,
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",
@@ -130,34 +135,38 @@ const FlavoursSection: React.FC = () => {
           Explore Our Fantastic Flavours
         </h1>
 
-        {/* Flavor Slider Container */}
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            marginRight: "10%",
             width: "100%",
-            height: "500px", // Adjust height as needed
+            height: "500px",
           }}
         >
-          <FlavorSlider /> {/* Your existing carousel component */}
+          <FlavorSlider
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            flavors={flavors}
+          />
         </div>
       </div>
 
-      {/* View Our Products Button */}
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          zIndex: 1, // Above emojis
+          zIndex: 1,
+          marginBottom: isMobile ? "50%" : "40px",
         }}
       >
         <button
           style={{
             padding: "15px 30px",
-            background: theme.colors.fantaOrange1,
+            background: currentColor,
             color: theme.colors.white,
             border: "none",
             borderRadius: "25px",
@@ -172,7 +181,7 @@ const FlavoursSection: React.FC = () => {
             e.currentTarget.style.transform = "scale(1.05)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = theme.colors.fantaOrange1;
+            e.currentTarget.style.background = currentColor;
             e.currentTarget.style.transform = "scale(1)";
           }}
         >
