@@ -1,54 +1,88 @@
-# React + TypeScript + Vite
+# Fanta Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[Live Demo](https://fanta-portfolio.netlify.app)
 
-Currently, two official plugins are available:
+## Description
+Fanta Portfolio is a colorful and engaging web application designed to showcase Fanta’s iconic flavors through an interactive carousel. Featuring a dynamic `FlavoursSection` with a sliding carousel and playful bouncing emojis, this project highlights modern React development with Framer Motion animations, offering a fun and visually appealing user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- **Flavor Carousel**: A sliding carousel displaying Fanta flavors (Orange, Grape, Pineapple) with smooth transitions and auto-advance every 6 seconds.
+- **Bouncing Emojis**: Randomly moving emojis that bounce off the section’s borders, adding a lively background effect.
+- **Dynamic Styling**: Gradient text headers and color-changing navigation buttons synced with the current flavor.
+- **Interactive Elements**: Hover effects on buttons and clickable navigation for the carousel.
+- **Responsive Design**: Optimized layout for various screen sizes.
 
-## Expanding the ESLint configuration
+## Technologies Used
+- **React**: Component-based UI framework
+- **TypeScript**: Type safety and improved code quality
+- **Framer Motion**: Animation library for smooth transitions and emoji movement
+- **Lucide React**: Icon library for navigation arrows
+- **CSS**: Inline styles for custom layouts and effects
+- **Vite**: Build tool for fast development and production (assumed, adjust if different)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Installation
+To set up and run the project locally:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/fanta-portfolio.git
+Navigate to the project directory:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Dependencies**
+    ```bash
+    cd fanta-portfolio
+Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. **Node and Npm**
+    ```bash
+    npm install
+Ensure you have Node.js and npm installed.
+Start the development server:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+    npm run dev
+
+Open http://localhost:5173 (or your configured port) in your browser.
+
+4. **Project Structure**
+
+fanta-portfolio/
+
+├── src/
+
+│   ├── components/
+
+│   │   ├── FlavoursSection.tsx   # Main section with carousel and emojis
+
+│   │   └── FlavourSlider.tsx     # Carousel component
+
+│   ├── images/                   # PNG assets for cans and fruits
+
+│   ├── styles/
+│   │   └── themes.ts             # Theme configuration (colors, fonts)
+
+│   └── App.tsx                   # Main app entry point
+
+├── public/                       # Static assets
+
+├── package.json                  # Dependencies and scripts
+
+└── README.md                     # This file
+Usage
+
+Navigate the Carousel: Use the left and right arrow buttons to cycle through flavors manually, or let it auto-advance every 6 seconds.
+Enjoy the Emojis: Watch the background emojis bounce around the FlavoursSection in random directions.
+Interact with Buttons: Hover over the "View Our Products" button to see its animation.
+
+Dependencies
+framer-motion: npm install framer-motion
+lucide-react: npm install lucide-react
+Known Issues
+Emojis may occasionally overlap with content on very small screens; consider adjusting numberOfEmojis or fontSize for responsiveness.
+Contributing
+Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request.
+
+License
+This project is licensed under the MIT License.
+
+Contact
+For questions or feedback, reach out at [nakaleimmanuel6@gmail.com] or visit github.com/ImmanuelN.
